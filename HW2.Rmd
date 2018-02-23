@@ -1,0 +1,71 @@
+---
+title: "Hw 2/21"
+author: "Runan Yao"
+date: "February 22, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Simulation : high dim sphere and cube
+
+## Basic funcions
+```{r}
+Sphere.Volume<-function(d, r){
+  return( (2*r^d*pi^(d/2)) / (d*gamma(d/2)) )
+}
+
+Cube.Volume<-function(d, r){
+  return( (2*r)^d )
+}
+
+Sphere.DifferentRatio <- function(d,r,e){
+  #return (r^d - (r-e)^d)/(r^d) this won't work when d is large
+  return (1 - (1 - e/r)^d)
+}
+```
+
+
+## Sphere v.s. Cube 
+
+### Code:
+
+```{r echo = FALSE}
+
+r = 100
+d = seq(0,100,by=1)
+S.Vol <- Sphere.Volume(d,r)
+C.Vol <- Cube.Volume(d,r)
+ratio = S.Vol/C.Vol
+plot(ratio, type = 'l', xlab = 'dimension', ylab = 'Sphere/Cube' )
+
+```
+
+### Conclusion:
+
+1. The code does not work when dimension is very large. Because gamma function will produce a huge result.
+
+2. Simulation shows, when dimension is increase, the volume of sphere become very small compare to the volume of cube.
+
+
+## Big Sphere v.s. Small Sphere
+
+### Code:
+
+```{r}
+r = 100
+e = 0.002
+d = seq(0,300000,by=1)
+ratio2 = Sphere.DifferentRatio(d,r,e)
+plot(ratio2, type = 'l', ylim = c(0,1), xlab = 'dimension', ylab = '(big-small)/big')
+```
+
+### Conclusion:
+
+1. When dimension increase, the volume of the difference between small sphere and big sphere increase.
+
+2. When dimension is sufficiently large, the different space between small sphere and big sphere hold almost all the space of big sphere. 
+
+
